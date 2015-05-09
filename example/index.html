@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Responsive Image Examples</title>
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+    <style>
+        body {
+            padding-top: 70px;
+        }
+    </style>
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+
+<!-- Fixed navbar -->
+<div class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="index.html">Responsive Images - Viewport: <span id="viewport"></span>px | DPR: @<span id="dpr"></span>x</a>
+        </div>
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="#">Github</a></li>
+            </ul>
+        </div>
+        <!--/.nav-collapse -->
+    </div>
+</div>
+
+<div class="container">
+
+    <h2>Responsive Image Examples</h2>
+
+    <div class="alert alert-success">
+        <p>These examples will show you the basic usages of the Responsive Image Plugin.</p>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-6">
+            <h4>MinWidth based on Viewport</h4>
+            <span class="picture" data-alt="foo" data-title="bar" data-class="img-responsive">
+                <span data-src="http://dummyimage.com/400x200/2849ad/ffffff&text=400+x+200+@1x"></span>
+                <span data-src="http://dummyimage.com/600x300/2849ad/ffffff&text=600+x+300+@1x" data-min-width="400"></span>
+                <span data-src="http://dummyimage.com/800x400/2849ad/ffffff&text=800+x+400+@1x" data-min-width="600"></span>
+                <span data-src="http://dummyimage.com/1000x500/2849ad/ffffff&text=1000+x+500+@1x" data-min-width="800"></span>
+                <span data-src="http://dummyimage.com/1200x600/2849ad/ffffff&text=1200+x+600+@1x" data-min-width="1000"></span>
+            </span>
+        </div>
+
+        <div class="col-xs-6">
+            <h4>MinWidth based on Container</h4>
+            <figure>
+                <span class="picture" data-container="figure" data-alt="foo" data-title="bar" data-class="img-responsive">
+                    <span data-src="http://dummyimage.com/400x200/2849ad/ffffff&text=400+x+200+@1x"></span>
+                    <span data-src="http://dummyimage.com/600x300/2849ad/ffffff&text=600+x+300+@1x" data-min-width="400"></span>
+                    <span data-src="http://dummyimage.com/800x400/2849ad/ffffff&text=800+x+400+@1x" data-min-width="600"></span>
+                    <span data-src="http://dummyimage.com/1000x500/2849ad/ffffff&text=1000+x+500+@1x" data-min-width="800"></span>
+                    <span data-src="http://dummyimage.com/1200x600/2849ad/ffffff&text=1200+x+600+@1x" data-min-width="1000"></span>
+                </span>
+            </figure>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-12">
+            <p>
+                <br>These images support 5 different states. The only difference is the width calculation.<br>
+                The left image is based on the windows viewport, the right is based on its surrounding &lt;figure&gt; tag.<br>
+                Breakpoints start from 0px to 399px, 400px to 599px, 600px to 799px, 800px to 999px and large image above 1000px.
+            </p>
+            <p>This code is used for both images. Only the <strong>data-container</strong> attribute is set for the right image.</p>
+            <pre class="small">
+&lt;span class=&quot;picture&quot; data-container=&quot;figure&quot; data-alt=&quot;foo&quot; data-title=&quot;bar&quot; data-class=&quot;img-responsive&quot;&gt;
+    &lt;span data-src=&quot;400x200.jpg&quot;&gt;&lt;/span&gt;
+    &lt;span data-src=&quot;600x300.jpg&quot; data-min-width=&quot;400&quot;&gt;&lt;/span&gt;
+    &lt;span data-src=&quot;800x400.jpg&quot; data-min-width=&quot;600&quot;&gt;&lt;/span&gt;
+    &lt;span data-src=&quot;1000x500.jpg&quot; data-min-width=&quot;800&quot;&gt;&lt;/span&gt;
+    &lt;span data-src=&quot;1200x600.jpg&quot; data-min-width=&quot;1000&quot;&gt;&lt;/span&gt;
+&lt;/span&gt;</pre>
+        </div>
+    </div>
+
+</div>
+<!-- /container -->
+
+<script src="js/jquery-1.7.2.min.js"></script>
+<script src="js/jquery.debouncedresize.js"></script>
+<script src="../src/jquery.responsiveImage.js"></script>
+<script type="text/javascript">
+    var helper = {
+        getDpr: function () {
+            if (window.screen.systemXDPI !== undefined && window.screen.logicalXDPI !== undefined && window.screen.systemXDPI > window.screen.logicalXDPI) {
+                return window.screen.systemXDPI / window.screen.logicalXDPI;
+            }
+
+            if (window.devicePixelRatio !== undefined) {
+                return window.devicePixelRatio;
+            }
+
+            return 1;
+        },
+
+        getWidth: function () {
+            return window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+        }
+    };
+
+    $(document).ready(function () {
+        // init responsive images
+        $('.picture').responsiveImage();
+
+        // load helpers
+        $('#viewport').html(helper.getWidth());
+        $('#dpr').html(helper.getDpr());
+        $(window).on('resize', function () {
+            $('#viewport').html(helper.getWidth());
+        });
+    });
+</script>
+</body>
+</html>
