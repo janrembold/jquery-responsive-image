@@ -29,14 +29,19 @@ Default image markup:
 you will get:
 
 ```html
-<!-- Viewport Width: 500px -->
+<!-- Viewport Width: 0px - 599px -->
 <span class="picture">
     <img src="small.jpg" alt=""/>    
 </span>
 
-<!-- Viewport Width: 700px -->
+<!-- Viewport Width: 600px - 999px -->
 <span class="picture">
     <img src="medium.jpg" alt=""/>    
+</span>
+
+<!-- Viewport Width: >1000px -->
+<span class="picture">
+    <img src="large.jpg" alt=""/>    
 </span>
 ```
 
