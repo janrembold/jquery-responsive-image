@@ -1,3 +1,6 @@
+/*! jquery-responsive-image - v1.1.0
+ * Copyright (c) 2015 Jan Rembold <janrembold@gmail.com>; License: MIT */
+
 (function ( $, window, document, undefined ) {
     'use strict';
 
@@ -6,11 +9,15 @@
         defaults = {
             source:             '> span',
             container:          null,
-            resizeEvent:        null,
-            onGetWidth:         null,
+
             minWidthDefault:    0,
             maxWidthDefault:    Number.MAX_VALUE,
-            minDprDefault:      1
+            minDprDefault:      1,
+
+            attributes:         ['title', 'alt', 'class', 'width', 'height'],
+            resizeEvent:        'resize',
+
+            onGetWidth:         null
         };
 
     // The actual plugin constructor
@@ -20,6 +27,7 @@
 
         this.sources = [];
         this.dpr = this.getDpr();
+        this.attributeCount = this.options.attributes.length;
 
         this.init();
     }
@@ -43,32 +51,39 @@
             // load responsive image
             this.loadResponsiveImage();
 
-            // init resize event with jquery-smartresize support: https://github.com/louisremi/jquery-smartresize
+            // init resize event with jquery-debouncedwidth support: https://github.com/janrembold/jquery-debouncedwidth
             this.initResizeEvent();
         },
 
         loadSources: function(){
-            var self = this, sources = [];
+            var self = this;
+            var sources = [];
 
+            // prepare all necessary image data
             this.$element.find(this.options.source).each(function(){
                 var $source = $(this);
 
-                // only use images with sources
+                // only use images with source
                 if($source.data('src')) {
-                    sources.push({
+                    var data = {
                         'src':      $source.data('src'),
-                        'alt':      $source.data('alt') || self.$element.data('alt') || '',
-                        'title':    $source.data('title') || self.$element.data('title'),
-                        'class':    $source.data('class') || self.$element.data('class'),
                         'minWidth': $source.data('min-width') || self.options.minWidthDefault,
                         'maxWidth': $source.data('max-width') || self.options.maxWidthDefault,
                         'minDpr':   $source.data('min-dpr') || self.options.minDprDefault
-                    });
+                    };
+
+                    // prepare all attributes
+                    for(var i=0; i<self.attributeCount; i++) {
+                        var attribute = self.options.attributes[i];
+                        data[attribute] = $source.data(attribute) || self.$element.data(attribute);
+                    }
+
+                    sources.push(data);
                 }
             });
 
             // sort sources desc by minWidth, maxWidth and minDpr -> largest files first
-            sources.sort(function(a,b) {
+            sources.sort(function(a, b) {
                 if(b.minWidth === a.minWidth) {
                     if(b.maxWidth === a.maxWidth) {
                         return b.minDpr - a.minDpr;
@@ -82,10 +97,11 @@
         },
 
         loadResponsiveImage: function () {
-            var newSource, targetWidth = this.getWidth();
+            var newSource;
+            var targetWidth = this.getWidth();
+            var sourceCount = this.sources.length;
 
             // search for best image source
-            var sourceCount = this.sources.length;
             for (var i=0; i<sourceCount; i++) {
                 if( this.sources[i].minWidth <= targetWidth &&
                     this.sources[i].maxWidth > targetWidth &&
@@ -101,14 +117,11 @@
                 return;
             }
 
-            // inject image
+            // set new source
             this.$currentSource = newSource;
-            this.$element.html($('<img/>', {
-                'src':   newSource.src,
-                'alt':   newSource.alt,
-                'title': newSource.title,
-                'class': newSource.class
-            }));
+
+            // append responsive image to target element
+            this.$element.html( this.createImageWithAttributes(newSource) );
         },
 
         getWidth: function(){
@@ -133,12 +146,25 @@
             return 1;
         },
 
-        initResizeEvent: function(){
-            // use global resize event first, than check for jquery-smartresize or use default resize event (not recommended)
-            var event = this.options.resizeEvent || ($.event.special.debouncedresize ? 'debouncedresize' : 'resize');
+        createImageWithAttributes: function(source){
+            // create default image
+            var image = document.createElement('img');
+            image.setAttribute('src', source.src);
 
+            // append all given attributes
+            for(var i=0; i<this.attributeCount; i++) {
+                var attribute = this.options.attributes[i];
+                if(typeof(source[attribute]) !== 'undefined' && source[attribute] !== '') {
+                    image.setAttribute(attribute, source[attribute]);
+                }
+            }
+
+            return image;
+        },
+
+        initResizeEvent: function(){
             // attach resize event handler
-            $(window).on(event, $.proxy(this.loadResponsiveImage, this));
+            $(window).on(this.options.resizeEvent, $.proxy(this.loadResponsiveImage, this));
         }
     });
 

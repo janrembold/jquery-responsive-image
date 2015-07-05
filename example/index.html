@@ -91,11 +91,45 @@
         </div>
     </div>
 
+    <div class="row">
+        <div class="col-xs-6">
+            <h4>With Retina @2x Support</h4>
+            <figure>
+                <span class="picture" data-container="figure" data-alt="foo" data-title="bar" data-class="img-responsive">
+                    <span data-src="http://dummyimage.com/400x200/2849ad/ffffff&text=400+x+200+@1x"></span>
+                    <span data-src="http://dummyimage.com/800x400/2849ad/ffffff&text=400+x+200+@2x" data-min-dpr="2"></span>
+                    <span data-src="http://dummyimage.com/600x300/2849ad/ffffff&text=600+x+300+@1x" data-min-width="400"></span>
+                    <span data-src="http://dummyimage.com/1200x600/2849ad/ffffff&text=600+x+300+@2x" data-min-dpr="2" data-min-width="400"></span>
+                    <span data-src="http://dummyimage.com/800x400/2849ad/ffffff&text=800+x+400+@1x" data-min-width="600"></span>
+                    <span data-src="http://dummyimage.com/1600x800/2849ad/ffffff&text=800+x+400+@2x" data-min-dpr="2" data-min-width="600"></span>
+                    <span data-src="http://dummyimage.com/1000x500/2849ad/ffffff&text=1000+x+500+@1x" data-min-width="800"></span>
+                    <span data-src="http://dummyimage.com/2000x1000/2849ad/ffffff&text=1000+x+500+@2x" data-min-dpr="2" data-min-width="800"></span>
+                </span>
+            </figure>
+        </div>
+
+        <div class="col-xs-6">
+            <h4>Unsorted sources (same as retina demo)</h4>
+            <figure>
+                <span class="picture" data-container="figure" data-alt="foo" data-title="bar" data-class="img-responsive">
+                    <span data-src="http://dummyimage.com/2000x1000/2849ad/ffffff&text=1000+x+500+@2x" data-min-dpr="2" data-min-width="800"></span>
+                    <span data-src="http://dummyimage.com/400x200/2849ad/ffffff&text=400+x+200+@1x"></span>
+                    <span data-src="http://dummyimage.com/800x400/2849ad/ffffff&text=800+x+400+@1x" data-min-width="600"></span>
+                    <span data-src="http://dummyimage.com/1600x800/2849ad/ffffff&text=800+x+400+@2x" data-min-dpr="2" data-min-width="600"></span>
+                    <span data-src="http://dummyimage.com/1000x500/2849ad/ffffff&text=1000+x+500+@1x" data-min-width="800"></span>
+                    <span data-src="http://dummyimage.com/800x400/2849ad/ffffff&text=400+x+200+@2x" data-min-dpr="2"></span>
+                    <span data-src="http://dummyimage.com/600x300/2849ad/ffffff&text=600+x+300+@1x" data-min-width="400"></span>
+                    <span data-src="http://dummyimage.com/1200x600/2849ad/ffffff&text=600+x+300+@2x" data-min-dpr="2" data-min-width="400"></span>
+                </span>
+            </figure>
+        </div>
+    </div>
+
 </div>
 <!-- /container -->
 
 <script src="js/jquery-1.7.2.min.js"></script>
-<script src="js/jquery.debouncedresize.js"></script>
+<script src="js/jquery.debouncedwidth.js"></script>
 <script src="../src/jquery.responsiveImage.js"></script>
 <script type="text/javascript">
     var helper = {
@@ -118,7 +152,9 @@
 
     $(document).ready(function () {
         // init responsive images
-        $('.picture').responsiveImage();
+        $('.picture').responsiveImage({
+            resizeEvent: 'debouncedwidth'
+        });
 
         // load helpers
         $('#viewport').html(helper.getWidth());

@@ -1,13 +1,18 @@
 # jQuery Responsive Image Plugin
 
-A jQuery responsive image plugin with viewport and container width matching support. 
+A jQuery responsive image plugin with viewport or container width matching support.
+Just load image by sizes you really need, save lots of bandwidth and make the world a better place :)
+
+This plugin doesn't need any matchMedia polyfills or shims for unknown html elements. 
+
+Minified size is 2.58KB | gzipped: 1.66KB
 
 ## Usage
 
-Load scripts and initialize the responsive images. The debouncedresize script is optional.
+Load scripts and initialize the responsive images.
 ```html
-<script src="js/jquery-1.7.2.min.js"></script>
-<script src="js/jquery.debouncedresize.js"></script>
+<!-- jQuery >1.7.2 is required -->
+<script src="js/jquery.min.js"></script>
 <script src="../build/jquery.responsiveImage.min.js"></script>
 <script>
     $(document).ready(function () {
@@ -67,15 +72,14 @@ Setting this parameter is recommended because it optimizes the target size for t
 </figure>
 ```
  
-#### `resizeEvent` (default: `null`)
+#### `resizeEvent` (default: `resize`)
 
 This is the resize event used to detect the resize of the viewport. 
 You can set any event that can be used inside jQuery's `.on()` function.
 
 It defaults to the `resize` event, which is not recommended because of the high amount of fired events.
  
-The plugin supports the event `debouncedresize` set by this plugin: https://github.com/louisremi/jquery-smartresize
-Just include this plugin on your site and this event will be used automatically.
+You can use my debounced width resize event plugin `debouncedwidth` to reduce the amount of fired events: https://github.com/janrembold/jquery-debouncedwidth
  
 #### `minWidthDefault` (default: `0`)
 
@@ -92,6 +96,10 @@ Be patient, this value can be overridden by `data-max-width` values that are sma
 The minimum device pixel ratio that is used if no `data-min-dpr` was set. Changing this value is not recommended. 
 If you want to show only Retina images set this value to `2`
  
+#### `attributes` (default: `['title', 'alt', 'class', 'width', 'height']`)
+
+These attributes are set to the generated responsive image tag. See Attributes-Section below for detailed information.
+
 #### `onGetWidth` (default: `null`)
 
 The viewport and the container width are calculated automatically.
@@ -116,6 +124,8 @@ Following image attributes can be set with there corresponding data attributes.
 - `alt` with `data-alt`
 - `title` with `data-title`
 - `class` with `data-class`
+- `width` with `data-width`
+- `height` with `data-height`
 
 You can set these attributes globally on the parent tag or individually on the images source tag.
 The image source tag overrides the global attribute.

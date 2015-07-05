@@ -1,6 +1,6 @@
 {
   "name": "jquery-responsive-image",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "A jQuery responsive image plugin with viewport or container based width matching support",
   "author": "Jan Rembold <janrembold@gmail.com>",
   "main": "build/jquery.responsiveImage.min.js",

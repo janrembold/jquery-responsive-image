@@ -10,7 +10,11 @@ module.exports = function(grunt) {
 
         uglify: {
             options: {
-                banner: '/*! <%= pkg.name %> v<%= pkg.version %> Last build: <%= grunt.template.today("yyyy-mm-dd") %> Licensed MIT */\n',
+                banner: "/*! <%= pkg.title || pkg.name %> - v<%= pkg.version %> - " +
+                "<%= grunt.template.today('yyyy-mm-dd') %>\n" +
+                "<%= pkg.homepage ? '* ' + pkg.homepage + '\\n' : '' %>" +
+                "* Copyright (c) <%= grunt.template.today('yyyy') %> <%= pkg.author %>;" +
+                " License: <%= pkg.license %> */\n",
                 sourceMap: true,
                 sourceMapName: 'build/jquery.responsiveImage.map'
             },
