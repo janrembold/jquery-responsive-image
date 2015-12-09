@@ -1,4 +1,4 @@
-/*! jquery-responsive-image - v1.1.0
+/*! jquery-responsive-image - v1.2.0
  * Copyright (c) 2015 Jan Rembold <janrembold@gmail.com>; License: MIT */
 
 (function ( $, window, document, undefined ) {
@@ -122,6 +122,9 @@
 
             // append responsive image to target element
             this.$element.html( this.createImageWithAttributes(newSource) );
+
+            // trigger new source event
+            this.$element.trigger('new.source.'+pluginName);
         },
 
         getWidth: function(){
@@ -172,7 +175,9 @@
         return this.each(function() {
             if ( !$.data( this, 'plugin_' + pluginName ) ) {
                 $.data( this, 'plugin_' + pluginName, new Plugin( this, options ) );
+                $(this).trigger('ready.'+pluginName);
             }
+            $(window).trigger('all.ready.'+pluginName);
         });
     };
 

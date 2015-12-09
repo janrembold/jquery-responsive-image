@@ -115,9 +115,18 @@ onGetWidth: function(){
 
 ```
 
----
+### Events
 
-## Attributes
+These events get fired:
+
+| Event | Description | Element |
+| ----- | ----------- | ------- |
+| ready.responsiveImage | This event fires when the responsive image was initially loaded, fires only once | The picture container |
+| all.ready.responsiveImage | This event fires when all responsive images were initially loaded, fires only once | Global - $(window) |
+| new.source.responsiveImage | This event fires when the image source was changed | The picture container |
+
+
+### Attributes
 
 Following image attributes can be set with there corresponding data attributes.
 
