@@ -123,7 +123,8 @@ These events get fired:
 | ----- | ----------- | ------- |
 | ready.responsiveImage | This event fires when the responsive image was initially loaded, fires only once | The picture container |
 | all.ready.responsiveImage | This event fires when all responsive images were initially loaded, fires only once | Global - $(window) |
-| new.source.responsiveImage | This event fires when the image source was changed | The picture container |
+| new.source.responsiveImage | This event fires when the image was inserted into the DOM | The picture container |
+| load.source.responsiveImage | This event fires when the image source was loaded | The picture container |
 
 
 ### Attributes
