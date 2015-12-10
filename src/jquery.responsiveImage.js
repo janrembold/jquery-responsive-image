@@ -151,6 +151,7 @@
 
         createImageWithAttributes: function(source){
             // create default image
+            var self = this;
             var image = document.createElement('img');
             image.setAttribute('src', source.src);
 
@@ -162,7 +163,9 @@
                 }
             }
 
-            return image;
+            return $(image).on('load', function() {
+                self.$element.trigger('load.source.responsiveImage');
+            });
         },
 
         initResizeEvent: function(){
