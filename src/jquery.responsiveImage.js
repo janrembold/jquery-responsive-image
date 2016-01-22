@@ -17,6 +17,7 @@
             attributes:         ['title', 'alt', 'class', 'width', 'height'],
             resizeEvent:        'resize',
             preload:            false,
+            autoSetDpr:         false,
 
             onGetWidth:         null
         };
@@ -146,14 +147,28 @@
 
         getWidth: function(){
             var self = this;
+            var width;
 
-            if($.isFunction(self.options.onGetWidth)) {
-                return self.options.onGetWidth.call(this);
-            } else if(self.$container) {
-                return self.$container.width();
+            if($.isFunction(this.options.onGetWidth)) {
+
+                // get width from custom function
+                width = this.options.onGetWidth.call(this);
+            } else if(this.$container) {
+
+                // get width from container
+                width = this.$container.width();
+            } else {
+
+                // get window width
+                width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
             }
 
-            return window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+            // multiply width with dpr
+            if( self.options.autoSetDpr ) {
+                width *= self.getDpr();
+            }
+
+            return width;
         },
 
         getDpr: function(){
