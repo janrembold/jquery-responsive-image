@@ -99,6 +99,15 @@ If you want to show only Retina images set this value to `2`
 #### `attributes` (default: `['title', 'alt', 'class', 'width', 'height']`)
 
 These attributes are set to the generated responsive image tag. See Attributes-Section below for detailed information.
+ 
+#### `preload` (default: `false`)
+
+Preload images before loading them into the DOM. Default is immediate loading of images.
+ 
+#### `autoSetDpr` (default: `false`)
+
+Multiply the device pixel ratio to the calculated width of viewport or container. 
+If enabled this adds retina support by default without the need for data-min-dpr attributes.  
 
 #### `onGetWidth` (default: `null`)
 
