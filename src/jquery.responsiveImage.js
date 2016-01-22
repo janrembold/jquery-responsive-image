@@ -16,43 +16,46 @@
 
             attributes:         ['title', 'alt', 'class', 'width', 'height'],
             resizeEvent:        'resize',
+            preload:            false,
 
             onGetWidth:         null
         };
 
     // The actual plugin constructor
     function Plugin ( element, options ) {
-        this.$element = $(element);
-        this.options = $.extend( {}, defaults, options );
+        var self = this;
+        self.$element = $(element);
+        self.options = $.extend( {}, defaults, options );
 
-        this.sources = [];
-        this.dpr = this.getDpr();
-        this.attributeCount = this.options.attributes.length;
+        self.sources = [];
+        self.dpr = self.getDpr();
+        self.attributeCount = self.options.attributes.length;
 
-        this.init();
+        self.init();
     }
 
     // Avoid Plugin.prototype conflicts
     $.extend(Plugin.prototype, {
         init: function () {
+            var self = this;
 
             // load sources
-            this.sources = this.loadSources();
-            if(this.sources.length === 0) {
+            self.sources = self.loadSources();
+            if(self.sources.length === 0) {
                 return;
             }
 
             // check container or viewport support - data-container overrides default setting
-            var containerSelector = this.$element.attr('data-container') || this.options.container;
+            var containerSelector = self.$element.attr('data-container') || self.options.container;
             if(containerSelector) {
-                this.$container = this.$element.parents(containerSelector);
+                self.$container = self.$element.parents(containerSelector);
             }
 
             // load responsive image
-            this.loadResponsiveImage();
+            self.loadResponsiveImage();
 
             // init resize event with jquery-debouncedwidth support: https://github.com/janrembold/jquery-debouncedwidth
-            this.initResizeEvent();
+            self.initResizeEvent();
         },
 
         loadSources: function(){
@@ -60,7 +63,7 @@
             var sources = [];
 
             // prepare all necessary image data
-            this.$element.find(this.options.source).each(function(){
+            self.$element.find(self.options.source).each(function(){
                 var $source = $(this);
 
                 // only use images with source
@@ -97,41 +100,57 @@
         },
 
         loadResponsiveImage: function () {
+            var self = this;
             var newSource;
-            var targetWidth = this.getWidth();
-            var sourceCount = this.sources.length;
+            var targetWidth = self.getWidth();
+            var sourceCount = self.sources.length;
 
             // search for best image source
             for (var i=0; i<sourceCount; i++) {
-                if( this.sources[i].minWidth <= targetWidth &&
-                    this.sources[i].maxWidth > targetWidth &&
-                    this.sources[i].minDpr <= this.dpr
+                if( self.sources[i].minWidth <= targetWidth &&
+                    self.sources[i].maxWidth > targetWidth &&
+                    self.sources[i].minDpr <= self.dpr
                 ) {
-                    newSource = this.sources[i];
+                    newSource = self.sources[i];
                     break;
                 }
             }
 
             // check if image is already loaded
-            if(newSource === this.$currentSource) {
+            if(newSource === self.$currentSource) {
                 return;
             }
 
             // set new source
-            this.$currentSource = newSource;
+            self.$currentSource = newSource;
 
-            // append responsive image to target element
-            this.$element.html( this.createImageWithAttributes(newSource) );
+            // create new image
+            var $image = self.createImageWithAttributes(newSource);
+
+            // append responsive image immediately to target element
+            if( !self.options.preload ) {
+                self.setNewSource( $image );
+            }
+
+        },
+
+        setNewSource: function( $image ) {
+            var self = this;
+
+            // set new image to html
+            self.$element.html( $image );
 
             // trigger new source event
-            this.$element.trigger('new.source.'+pluginName);
+            self.$element.trigger('new.source.'+pluginName);
         },
 
         getWidth: function(){
-            if($.isFunction(this.options.onGetWidth)) {
-                return this.options.onGetWidth.call(this);
-            } else if(this.$container) {
-                return this.$container.width();
+            var self = this;
+
+            if($.isFunction(self.options.onGetWidth)) {
+                return self.options.onGetWidth.call(this);
+            } else if(self.$container) {
+                return self.$container.width();
             }
 
             return window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
@@ -152,25 +171,40 @@
         createImageWithAttributes: function(source){
             // create default image
             var self = this;
-            var image = document.createElement('img');
-            image.setAttribute('src', source.src);
+            var $image = $('<img/>');
 
             // append all given attributes
-            for(var i=0; i<this.attributeCount; i++) {
-                var attribute = this.options.attributes[i];
+            for(var i=0; i<self.attributeCount; i++) {
+                var attribute = self.options.attributes[i];
                 if(typeof(source[attribute]) !== 'undefined' && source[attribute] !== '') {
-                    image.setAttribute(attribute, source[attribute]);
+                    $image.attr(attribute, source[attribute]);
                 }
             }
 
-            return $(image).on('load', function() {
-                self.$element.trigger('load.source.responsiveImage');
-            });
+            // add load event listener and set image source
+            $image.one('load', function() {
+                    self.$element.trigger('load.source.responsiveImage');
+
+                    // append responsive image to target element after preload
+                    if( self.options.preload ) {
+                        self.setNewSource( $image );
+                    }
+                })
+                .attr('src', source.src);
+
+            // check if image is already completed, maybe from browser cache
+            if( $image.get(0).complete ) {
+                $image.trigger('load');
+            }
+
+            return $image;
         },
 
         initResizeEvent: function(){
+            var self = this;
+
             // attach resize event handler
-            $(window).on(this.options.resizeEvent, $.proxy(this.loadResponsiveImage, this));
+            $(window).on(self.options.resizeEvent, $.proxy(self.loadResponsiveImage, self));
         }
     });
 
