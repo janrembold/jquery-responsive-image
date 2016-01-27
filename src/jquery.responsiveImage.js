@@ -17,7 +17,7 @@
             attributes:         ['title', 'alt', 'class', 'width', 'height'],
             resizeEvent:        'resize',
             preload:            false,
-            autoSetDpr:         false,
+            autoDpr:            false,
 
             onGetWidth:         null
         };
@@ -149,14 +149,14 @@
             var self = this;
             var width;
 
-            if($.isFunction(this.options.onGetWidth)) {
+            if($.isFunction(self.options.onGetWidth)) {
 
                 // get width from custom function
-                width = this.options.onGetWidth.call(this);
-            } else if(this.$container) {
+                width = self.options.onGetWidth.call(this);
+            } else if(self.$container) {
 
                 // get width from container
-                width = this.$container.width();
+                width = self.$container.width();
             } else {
 
                 // get window width
@@ -164,7 +164,7 @@
             }
 
             // multiply width with dpr
-            if( self.options.autoSetDpr ) {
+            if( self.options.autoDpr ) {
                 width *= self.getDpr();
             }
 
@@ -198,14 +198,14 @@
 
             // add load event listener and set image source
             $image.one('load', function() {
-                    self.$element.trigger('load.source.responsiveImage');
+                self.$element.trigger('load.source.responsiveImage');
 
-                    // append responsive image to target element after preload
-                    if( self.options.preload ) {
-                        self.setNewSource( $image );
-                    }
-                })
-                .attr('src', source.src);
+                // append responsive image to target element after preload
+                if( self.options.preload ) {
+                    self.setNewSource( $image );
+                }
+            })
+            .attr('src', source.src);
 
             // check if image is already completed, maybe from browser cache
             if( $image.get(0).complete ) {

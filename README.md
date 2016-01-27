@@ -104,9 +104,9 @@ These attributes are set to the generated responsive image tag. See Attributes-S
 
 Preload images before loading them into the DOM. Default is immediate loading of images.
  
-#### `autoSetDpr` (default: `false`)
+#### `autoDpr` (default: `false`)
 
-Multiply the device pixel ratio to the calculated width of viewport or container. 
+Automatically include dpr on best fit width calculation.  
 If enabled this adds retina support by default without the need for data-min-dpr attributes.  
 
 #### `onGetWidth` (default: `null`)
