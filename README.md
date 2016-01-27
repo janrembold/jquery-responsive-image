@@ -5,7 +5,6 @@ Just load image by sizes you really need, save lots of bandwidth and make the wo
 
 This plugin doesn't need any matchMedia polyfills or shims for unknown html elements. 
 
-Minified size is 2.58KB | gzipped: 1.66KB
 
 ## Usage
 
