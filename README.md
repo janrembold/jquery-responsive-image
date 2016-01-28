@@ -5,7 +5,6 @@ Just load image by sizes you really need, save lots of bandwidth and make the wo
 
 This plugin doesn't need any matchMedia polyfills or shims for unknown html elements. 
 
-Minified size is 2.58KB | gzipped: 1.66KB
 
 ## Usage
 
@@ -76,6 +75,7 @@ Setting this parameter is recommended because it optimizes the target size for t
 
 This is the resize event used to detect the resize of the viewport. 
 You can set any event that can be used inside jQuery's `.on()` function.
+Set `resizeEvent` to empty string to disable image calculation on resize.
 
 It defaults to the `resize` event, which is not recommended because of the high amount of fired events.
  
@@ -99,6 +99,15 @@ If you want to show only Retina images set this value to `2`
 #### `attributes` (default: `['title', 'alt', 'class', 'width', 'height']`)
 
 These attributes are set to the generated responsive image tag. See Attributes-Section below for detailed information.
+ 
+#### `preload` (default: `false`)
+
+Preload images before loading them into the DOM. Default is immediate loading of images.
+ 
+#### `autoDpr` (default: `false`)
+
+Automatically include dpr on best fit width calculation.  
+If enabled this adds retina support by default without the need for data-min-dpr attributes.  
 
 #### `onGetWidth` (default: `null`)
 
