@@ -165,7 +165,7 @@
 
             // multiply width with dpr
             if( self.options.autoDpr ) {
-                width *= self.getDpr();
+                width *= self.dpr;
             }
 
             return width;
