@@ -219,7 +219,9 @@
             var self = this;
 
             // attach resize event handler
-            $(window).on(self.options.resizeEvent, $.proxy(self.loadResponsiveImage, self));
+            if( self.options.resizeEvent !== '' ) {
+                $(window).on(self.options.resizeEvent, $.proxy(self.loadResponsiveImage, self));
+            }
         }
     });
 

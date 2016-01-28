@@ -75,6 +75,7 @@ Setting this parameter is recommended because it optimizes the target size for t
 
 This is the resize event used to detect the resize of the viewport. 
 You can set any event that can be used inside jQuery's `.on()` function.
+Set `resizeEvent` to empty string to disable image calculation on resize.
 
 It defaults to the `resize` event, which is not recommended because of the high amount of fired events.
  
