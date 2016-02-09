@@ -8,6 +8,7 @@
     var pluginName = 'responsiveImage',
         defaults = {
             source:             '> span',
+            sourcePrefix:       '',
             container:          null,
 
             minWidthDefault:    0,
@@ -19,7 +20,8 @@
             preload:            false,
             autoDpr:            false,
 
-            onGetWidth:         null
+            onGetWidth:         null,
+            onLoadSources:      null
         };
 
     // The actual plugin constructor
@@ -31,6 +33,10 @@
         self.sources = [];
         self.dpr = self.getDpr();
         self.attributeCount = self.options.attributes.length;
+
+        if( typeof( self.$element.data('source-prefix') ) !== 'undefined' ) {
+            self.options.sourcePrefix = self.$element.data('source-prefix');
+        }
 
         self.init();
     }
@@ -63,28 +69,35 @@
             var self = this;
             var sources = [];
 
-            // prepare all necessary image data
-            self.$element.find(self.options.source).each(function(){
-                var $source = $(this);
+            if( $.isFunction( self.options.onLoadSources ) ) {
 
-                // only use images with source
-                if($source.data('src')) {
-                    var data = {
-                        'src':      $source.data('src'),
-                        'minWidth': $source.data('min-width') || self.options.minWidthDefault,
-                        'maxWidth': $source.data('max-width') || self.options.maxWidthDefault,
-                        'minDpr':   $source.data('min-dpr') || self.options.minDprDefault
-                    };
+                // use injected source loader
+                sources = self.options.onLoadSources( self );
+            } else {
 
-                    // prepare all attributes
-                    for(var i=0; i<self.attributeCount; i++) {
-                        var attribute = self.options.attributes[i];
-                        data[attribute] = $source.data(attribute) || self.$element.data(attribute);
+                // prepare all necessary image data
+                self.$element.find(self.options.source).each(function(){
+                    var $source = $(this);
+
+                    // only use images with source
+                    if($source.data('src')) {
+                        var data = {
+                            'src':      self.options.sourcePrefix + $source.data('src'),
+                            'minWidth': $source.data('min-width') || self.options.minWidthDefault,
+                            'maxWidth': $source.data('max-width') || self.options.maxWidthDefault,
+                            'minDpr':   $source.data('min-dpr') || self.options.minDprDefault
+                        };
+
+                        // prepare all attributes
+                        for(var i=0; i<self.attributeCount; i++) {
+                            var attribute = self.options.attributes[i];
+                            data[attribute] = $source.data(attribute) || self.$element.data(attribute);
+                        }
+
+                        sources.push(data);
                     }
-
-                    sources.push(data);
-                }
-            });
+                });
+            }
 
             // sort sources desc by minWidth, maxWidth and minDpr -> largest files first
             sources.sort(function(a, b) {
