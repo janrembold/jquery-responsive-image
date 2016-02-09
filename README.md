@@ -55,7 +55,7 @@ you will get:
 
 The jQuery selector for source elements.
 
-#### `sourceprefix` (default: `''`)
+#### `sourcePrefix` (default: `''`)
 
 A prefix for every(!) source element. 
 Might be the default URL to the asset folder or a CDN so the `source` element only needs the relative path to the specific image.
