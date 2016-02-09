@@ -55,6 +55,13 @@ you will get:
 
 The jQuery selector for source elements.
 
+#### `sourceprefix` (default: `''`)
+
+A prefix for every(!) source element. 
+Might be the default URL to the asset folder or a CDN so the `source` element only needs the relative path to the specific image.
+ 
+This parameter can also be set with a `data-source-prefix` attribute directly on the picture wrapper.
+
 #### `container` (default: `null`)
 
 A default container element that defines the size for the responsive image to be loaded. 
@@ -111,8 +118,8 @@ If enabled this adds retina support by default without the need for data-min-dpr
 
 #### `onGetWidth` (default: `null`)
 
-The viewport and the container width are calculated automatically.
-The callback function can be used for any custom width calculation. Inside this function you can use the plugins' context.   
+By default the viewport or container width are calculated automatically.
+This callback function can be used for any custom width calculation. Inside this function you can use the plugins' context.   
 
 ```js
 
@@ -123,6 +130,32 @@ onGetWidth: function(){
 }
 
 ```
+
+#### `onLoadSources` (default: `null`)
+
+This callback function can be used to completely overwrite the source loading process.
+
+
+```js
+
+onLoadSources: function( context ){
+    // "context" gives full access to the plugins context
+    
+    // Following source shows a default source object. This structure is required!
+    // var source = {
+    //    'src':      context.options.sourcePrefix + $source.data('src'),
+    //    'minWidth': $source.data('min-width') || context.options.minWidthDefault,
+    //    'maxWidth': $source.data('max-width') || context.options.maxWidthDefault,
+    //    'minDpr':   $source.data('min-dpr') || context.options.minDprDefault
+    // };
+    
+    // Add other image attributes to source object as needed, e.g. "class", "title" .... 
+    
+    return [ /* array of sources */ ]; 
+}
+
+```
+
 
 ### Events
 
