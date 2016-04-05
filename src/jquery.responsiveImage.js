@@ -189,9 +189,7 @@
 
             if (window.screen.systemXDPI !== undefined && window.screen.logicalXDPI !== undefined && window.screen.systemXDPI > window.screen.logicalXDPI) {
                 dpr = window.screen.systemXDPI / window.screen.logicalXDPI;
-            }
-
-            if (window.devicePixelRatio !== undefined) {
+            } else if (window.devicePixelRatio !== undefined) {
                 dpr = window.devicePixelRatio;
             }
 
