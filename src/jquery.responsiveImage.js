@@ -212,7 +212,6 @@
 
             // add load event listener and set image source
             $image.on('load', function() {
-                $image.off('load');
                 self.$element.trigger('load.source.responsiveImage');
 
                 // append responsive image to target element after preload
