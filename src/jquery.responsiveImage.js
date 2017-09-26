@@ -218,6 +218,8 @@
                 if( self.options.preload ) {
                     self.setNewSource( $image );
                 }
+
+                $image.off('load');
             })
             .attr('src', source.src);
 
