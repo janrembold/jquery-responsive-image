@@ -1,4 +1,4 @@
-/*! jquery-responsive-image - v1.2.0
+/*! jquery-responsive-image
  * Copyright (c) 2015 Jan Rembold <janrembold@gmail.com>; License: MIT */
 
 (function ( $, window, document, undefined ) {
@@ -185,15 +185,16 @@
         },
 
         getDpr: function(){
+            var dpr = 1;
+
             if (window.screen.systemXDPI !== undefined && window.screen.logicalXDPI !== undefined && window.screen.systemXDPI > window.screen.logicalXDPI) {
-                return window.screen.systemXDPI / window.screen.logicalXDPI;
+                dpr = window.screen.systemXDPI / window.screen.logicalXDPI;
+            } else if (window.devicePixelRatio !== undefined) {
+                dpr = window.devicePixelRatio;
             }
 
-            if (window.devicePixelRatio !== undefined) {
-                return window.devicePixelRatio;
-            }
-
-            return 1;
+            // return only dpr >= 1, because zoomed pages (>100%) return dpr values smaller than 1
+            return dpr >= 1 ? dpr : 1;
         },
 
         createImageWithAttributes: function(source){
@@ -250,5 +251,3 @@
     };
 
 })( jQuery, window, document );
-
-//# sourceMappingURL=jquery.responsiveImage.map
