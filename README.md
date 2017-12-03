@@ -122,13 +122,11 @@ By default the viewport or container width are calculated automatically.
 This callback function can be used for any custom width calculation. Inside this function you can use the plugins' context.   
 
 ```js
-
 onGetWidth: function(){
     // this.$container is the jQuery object used for container 
     // this.options are the plugins' options
     return 123; // custom integer width
 }
-
 ```
 
 #### `onLoadSources` (default: `null`)
@@ -137,7 +135,6 @@ This callback function can be used to completely overwrite the source loading pr
 
 
 ```js
-
 onLoadSources: function( context ){
     // "context" gives full access to the plugins context
     
@@ -153,11 +150,10 @@ onLoadSources: function( context ){
     
     return [ /* array of sources */ ]; 
 }
-
 ```
 
 
-### Events
+### Events fired by the plugin
 
 These events get fired:
 
@@ -167,6 +163,13 @@ These events get fired:
 | all.ready.responsiveImage | This event fires when all responsive images were initially loaded, fires only once | Global - $(window) |
 | new.source.responsiveImage | This event fires when the image was inserted into the DOM | The picture container |
 | load.source.responsiveImage | This event fires when the image source was loaded | The picture container |
+
+
+### Event Listeners
+
+| Event | Description | Element |
+| ----- | ----------- | ------- |
+| load.responsiveImage | This event triggers the responsive image load method and forces a recalculation of the currently used image | The picture container |
 
 
 ### Attributes
