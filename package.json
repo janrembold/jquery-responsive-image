@@ -1,25 +1,41 @@
 {
-  "name": "jquery-responsive-image",
-  "version": "1.4.3",
-  "description": "A jQuery responsive image plugin with viewport or container based width matching support",
-  "author": "Jan Rembold <janrembold@gmail.com>",
-  "main": "build/jquery.responsiveImage.min.js",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/janrembold/jquery-responsive-image"
-  },
-  "license": "MIT",
-  "keywords": [
-    "jQuery",
-    "responsive",
-    "image",
-    "container",
-    "viewport"
-  ],
-  "devDependencies": {
-    "grunt": "^0.4.5",
-    "grunt-contrib-clean": "^0.6.0",
-    "grunt-contrib-jshint": "^0.11.2",
-    "grunt-contrib-uglify": "^0.9.1"
-  }
+	"name": "jquery-responsive-image",
+	"version": "2.0.0",
+	"description": "A jQuery responsive image plugin with viewport or container based width matching support",
+	"main": "dist/jquery.responsiveImage.js",
+	"module": "src/index.ts",
+	"typings": "src/index.d.ts",
+	"repository": "https://github.com/janrembold/jquery-responsive-image.git",
+	"author": "Jan Rembold <janrembold@gmail.com>",
+	"license": "MIT",
+	"scripts": {
+		"clean": "rimraf dist",
+		"build": "npm run clean && webpack",
+		"build:watch": "npm run clean && webpack --watch",
+		"pretest": "npm run build",
+		"test": "npm run --silent test:unit",
+		"test:unit": "tsc --module commonjs ./test/unit/*.ts && mocha ./test/unit/*.js"
+	},
+	"devDependencies": {
+		"@types/chai": "4.0.6",
+		"@types/jquery": "2.0.39",
+		"@types/mocha": "2.2.44",
+		"chai": "4.1.2",
+		"css-loader": "0.28.7",
+		"extract-text-webpack-plugin": "3.0.2",
+		"mocha": "4.0.1",
+		"node-sass": "4.7.2",
+		"rimraf": "2.6.2",
+		"sass-loader": "6.0.6",
+		"source-map-loader": "0.2.3",
+		"ts-loader": "3.2.0",
+		"typescript": "2.6.2",
+		"uglify-js": "3.2.0",
+		"webpack": "3.9.1",
+		"webpack-node-externals": "1.6.0"
+	},
+	"dependencies": {
+		"jquery-base": "https://github.com/vi-plugins/jquery-base.git#1.0.0",
+		"jquery-events": "https://github.com/vi-plugins/jquery-events.git#1.0.0"
+	}
 }

@@ -1,0 +1,25 @@
+{
+  "name": "jquery-responsive-image",
+  "version": "1.4.3",
+  "description": "A jQuery responsive image plugin with viewport or container based width matching support",
+  "author": "Jan Rembold <janrembold@gmail.com>",
+  "main": "build/jquery.responsiveImage.min.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/janrembold/jquery-responsive-image"
+  },
+  "license": "MIT",
+  "keywords": [
+    "jQuery",
+    "responsive",
+    "image",
+    "container",
+    "viewport"
+  ],
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-contrib-clean": "^0.6.0",
+    "grunt-contrib-jshint": "^0.11.2",
+    "grunt-contrib-uglify": "^0.9.1"
+  }
+}
