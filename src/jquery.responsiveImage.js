@@ -63,6 +63,11 @@
 
             // init resize event with jquery-debouncedwidth support: https://github.com/janrembold/jquery-debouncedwidth
             self.initResizeEvent();
+
+            // trigger loadResponsiveImage method
+            self.$element.on('load.responsiveImage', function() {
+                self.loadResponsiveImage();
+            });
         },
 
         loadSources: function(){
