@@ -24,6 +24,8 @@ Default image markup:
 
 ```html
 <span class="picture">
+    <!-- optional fallback <img>: if JS is disabled or image is not loading while preload option is set to 'true' no image tag will be rendered. To make sure that an <img> tag is rendered set it as a fallback within the html. -->
+    <img src="small.jpg" title="" alt="">
     <span data-src="small.jpg"></span>
     <span data-src="medium.jpg" data-min-width="600"></span>
     <span data-src="large.jpg" data-min-width="1000"></span>
