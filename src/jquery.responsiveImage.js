@@ -21,7 +21,8 @@
             autoDpr:            false,
 
             onGetWidth:         null,
-            onLoadSources:      null
+            onLoadSources:      null,
+            onLoadImageError:	null
         };
 
     // The actual plugin constructor
@@ -225,6 +226,17 @@
                 }
             })
             .attr('src', source.src);
+
+            // add error event listener and execute callback function
+            $image.on('error', function() {
+                self.$element.trigger('error.load.responsiveImage');
+
+                if( $.isFunction( self.options.onLoadImageError ) ) {
+
+                    // use injected error handler
+                    self.options.onLoadImageError( self );
+                }
+            });
 
             // check if image is already completed, maybe from browser cache
             if( $image.get(0).complete ) {
